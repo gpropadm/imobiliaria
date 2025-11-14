@@ -20,8 +20,16 @@ export default function MainSearchForm() {
   const [showTypeSuggestions, setShowTypeSuggestions] = useState(false)
   const [showCategorySuggestions, setShowCategorySuggestions] = useState(false)
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
+  const [showBedroomsSuggestions, setShowBedroomsSuggestions] = useState(false)
   const [headerTitle, setHeaderTitle] = useState('')
   const [headerSubtitle, setHeaderSubtitle] = useState('')
+
+  const bedroomOptions = [
+    { value: '1', label: '1 quarto' },
+    { value: '2', label: '2 quartos' },
+    { value: '3', label: '3 quartos' },
+    { value: '4', label: '4+ quartos' }
+  ]
 
   // Carregar configurações (título e subtítulo)
   useEffect(() => {
@@ -234,17 +242,33 @@ export default function MainSearchForm() {
 
             {/* Campo 4: Quartos */}
             <div className="relative w-full lg:w-auto border-gray-300">
-              <select
-                value={bedrooms}
-                onChange={(e) => setBedrooms(e.target.value)}
-                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 cursor-pointer"
-              >
-                <option value="">Quartos</option>
-                <option value="1">1 quarto</option>
-                <option value="2">2 quartos</option>
-                <option value="3">3 quartos</option>
-                <option value="4">4+ quartos</option>
-              </select>
+              <input
+                type="text"
+                value={bedrooms ? bedroomOptions.find(opt => opt.value === bedrooms)?.label || '' : ''}
+                onChange={(e) => setBedrooms('')}
+                onFocus={() => setShowBedroomsSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowBedroomsSuggestions(false), 200)}
+                placeholder="Quartos"
+                readOnly
+                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400 cursor-pointer"
+              />
+
+              {showBedroomsSuggestions && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200">
+                  {bedroomOptions.map((option) => (
+                    <div
+                      key={option.value}
+                      onClick={() => {
+                        setBedrooms(option.value)
+                        setShowBedroomsSuggestions(false)
+                      }}
+                      className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                    >
+                      {option.label}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Botão de Busca - Integrado */}
