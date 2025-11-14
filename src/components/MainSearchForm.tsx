@@ -133,10 +133,10 @@ export default function MainSearchForm() {
         }
         .field-label {
           display: block;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
           color: #1a1a1a;
-          margin-bottom: 4px;
+          margin-bottom: 2px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
@@ -145,7 +145,7 @@ export default function MainSearchForm() {
           border: none;
           outline: none;
           background: transparent;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
           color: #1a1a1a;
           padding: 0;
@@ -220,7 +220,7 @@ export default function MainSearchForm() {
             }}
           >
             {/* Campo 1: Pretensão */}
-            <div className="modern-field py-4 pr-6">
+            <div className="modern-field py-3 pr-6">
               <label className="field-label">Pretensão</label>
               <input
                 type="text"
@@ -251,7 +251,7 @@ export default function MainSearchForm() {
             </div>
 
             {/* Campo 2: Tipo */}
-            <div className="modern-field py-4 pr-6">
+            <div className="modern-field py-3 pr-6">
               <label className="field-label">Tipo</label>
               <input
                 type="text"
@@ -284,7 +284,7 @@ export default function MainSearchForm() {
             </div>
 
             {/* Campo 3: Cidade */}
-            <div className="modern-field py-4 pr-6">
+            <div className="modern-field py-3 pr-6">
               <label className="field-label">Cidade</label>
               <input
                 type="text"
@@ -314,7 +314,7 @@ export default function MainSearchForm() {
             </div>
 
             {/* Campo 4: Quartos */}
-            <div className="modern-field py-4 pr-2">
+            <div className="modern-field py-3 pr-2">
               <label className="field-label">Quartos</label>
               <input
                 type="text"
@@ -355,10 +355,10 @@ export default function MainSearchForm() {
             {/* Botão Buscar */}
             <button
               type="submit"
-              className="search-btn px-10 py-4 text-white font-bold text-base flex items-center gap-2 lg:ml-2"
-              style={{ borderRadius: '12px' }}
+              className="search-btn px-8 py-3 text-white font-semibold text-sm flex items-center gap-2"
+              style={{ borderRadius: '10px' }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span>Buscar</span>
