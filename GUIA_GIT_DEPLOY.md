@@ -69,7 +69,7 @@ git commit -m "Sua mensagem aqui descrevendo as mudanças"
 
 ### Exemplo de boas mensagens:
 ```bash
-git commit -m "Atualizar logo e marca para BS Imóveis"
+git commit -m "Atualizar logo e marca para All Sites"
 git commit -m "Corrigir bug no formulário de contato"
 git commit -m "Adicionar nova página de serviços"
 git commit -m "Alterar cor do botão de WhatsApp"
@@ -325,4 +325,4 @@ git log -3 -p
 ---
 
 **Última atualização:** 2025-10-20
-**Projeto:** BS Imóveis (modelo-site)
+**Projeto:** All Sites (modelo-site)

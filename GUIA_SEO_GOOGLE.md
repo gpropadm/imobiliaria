@@ -84,7 +84,7 @@ Repetir para URLs importantes:
 ### 1. **Criar Imagem OG (Open Graph)**
 Criar arquivo: `/public/og-image.jpg`
 - Tamanho: 1200x630px
-- Incluir logo + texto: "BS Imóveis DF - Imóveis em Brasília"
+- Incluir logo + texto: "All Sites DF - Imóveis em Brasília"
 - Usar no Canva ou Photoshop
 
 ### 2. **Google Analytics 4**
@@ -118,7 +118,7 @@ Adicionar ALT text em todas as imagens:
 ```tsx
 <Image
   src={image}
-  alt="Apartamento 2 quartos à venda na Asa Sul, Brasília - BS Imóveis"
+  alt="Apartamento 2 quartos à venda na Asa Sul, Brasília - All Sites"
   // NÃO: alt="imagem1.jpg"
 />
 ```

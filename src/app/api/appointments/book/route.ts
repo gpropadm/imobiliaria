@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
 
       // 2. Enviar confirmação para o cliente
       const settings = await prisma.settings.findFirst();
-      const siteName = settings?.siteName || 'BS Imóveis DF';
+      const siteName = settings?.siteName || 'All Sites DF';
       const sitePhone = settings?.whatsappNumber || phoneAdmin;
 
       const clientConfirmation = `✅ Visita Agendada com Sucesso!

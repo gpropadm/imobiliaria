@@ -1,4 +1,4 @@
-# robots.txt - BS Imóveis DF
+# robots.txt - All Sites DF
 # https://www.bsimoveisdf.com.br/robots.txt
 
 User-agent: *

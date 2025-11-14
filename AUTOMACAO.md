@@ -1,4 +1,4 @@
-# 🤖 Automações WhatsApp - BS Imóveis DF
+# 🤖 Automações WhatsApp - All Sites DF
 
 ## Scripts Disponíveis
 

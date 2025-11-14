@@ -23,7 +23,7 @@ async function main() {
     data: {
       email,
       password: hashedPassword,
-      name: 'BS Imóveis DF',
+      name: 'All Sites DF',
       role: 'admin'
     }
   })

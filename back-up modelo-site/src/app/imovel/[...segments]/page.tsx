@@ -140,7 +140,7 @@ export async function generateMetadata({ params }: PropertyDetailProps): Promise
 
   const title = `${property.category} ${property.bedrooms ? `${property.bedrooms} quartos` : ''} ${property.type === 'venda' ? 'à venda' : 'para alugar'} ${property.city} - ${formatPrice(property.price)}`
   const description = property.description ||
-    `${property.category} para ${property.type} em ${property.city}, ${property.state}. ${property.bedrooms ? `${property.bedrooms} quartos` : ''} ${property.bathrooms ? `${property.bathrooms} banheiros` : ''} ${property.area ? `${property.area}m²` : ''}. Confira na BS Imóveis DF.`
+    `${property.category} para ${property.type} em ${property.city}, ${property.state}. ${property.bedrooms ? `${property.bedrooms} quartos` : ''} ${property.bathrooms ? `${property.bathrooms} banheiros` : ''} ${property.area ? `${property.area}m²` : ''}. Confira na All Sites DF.`
 
   // Gerar URL canônica no formato SEO-friendly
   const categorySlug = property.category.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')
@@ -174,7 +174,7 @@ export async function generateMetadata({ params }: PropertyDetailProps): Promise
       ],
       type: 'website',
       locale: 'pt_BR',
-      siteName: 'BS Imóveis DF',
+      siteName: 'All Sites DF',
     },
     twitter: {
       card: 'summary_large_image',

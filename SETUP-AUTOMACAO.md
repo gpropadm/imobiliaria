@@ -1,4 +1,4 @@
-# 🤖 Setup de Automações - BS Imóveis DF
+# 🤖 Setup de Automações - All Sites DF
 
 ## 📋 Opções de Configuração
 

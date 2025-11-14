@@ -1,4 +1,4 @@
-# 🏠 BS Imóveis DF - Sistema CRM Avançado com IA
+# 🏠 All Sites DF - Sistema CRM Avançado com IA
 
 Sistema completo de gestão imobiliária com CRM visual, automação via WhatsApp, Lead Scoring inteligente e muito mais!
 

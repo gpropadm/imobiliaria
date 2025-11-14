@@ -105,7 +105,7 @@ async function sendReminders() {
     }
 
     const settings = await prisma.settings.findFirst();
-    const siteName = settings?.siteName || 'BS Imóveis DF';
+    const siteName = settings?.siteName || 'All Sites DF';
     const sitePhone = settings?.whatsappNumber || process.env.WHATSAPP_ADMIN_PHONE;
 
     for (const appointment of appointments) {
