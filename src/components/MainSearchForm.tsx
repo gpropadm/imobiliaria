@@ -17,7 +17,9 @@ export default function MainSearchForm() {
   const [cities, setCities] = useState<string[]>([])
   const [neighborhoods, setNeighborhoods] = useState<string[]>([])
   const [filteredLocations, setFilteredLocations] = useState<string[]>([])
-  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [showTypeSuggestions, setShowTypeSuggestions] = useState(false)
+  const [showCategorySuggestions, setShowCategorySuggestions] = useState(false)
+  const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
   const [headerTitle, setHeaderTitle] = useState('')
   const [headerSubtitle, setHeaderSubtitle] = useState('')
 
@@ -75,16 +77,14 @@ export default function MainSearchForm() {
 
   // Filtrar sugestões baseado no que o usuário digita
   useEffect(() => {
-    if (location.length >= 2) {
+    if (location.length >= 1) {
       const allLocations = [...cities, ...neighborhoods]
       const filtered = allLocations.filter(loc =>
         loc.toLowerCase().includes(location.toLowerCase())
       )
-      setFilteredLocations(filtered.slice(0, 5)) // Mostrar no máximo 5 sugestões
-      setShowSuggestions(filtered.length > 0)
+      setFilteredLocations(filtered.slice(0, 10))
     } else {
       setFilteredLocations([])
-      setShowSuggestions(false)
     }
   }, [location, cities, neighborhoods])
 
@@ -99,6 +99,22 @@ export default function MainSearchForm() {
 
   return (
     <>
+      <style jsx>{`
+        .search-input {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+        }
+        .search-input:focus {
+          border-color: ${primaryColor};
+          box-shadow: 0 0 0 3px ${primaryColor}15;
+        }
+        .suggestion-item:hover {
+          background: ${primaryColor}08;
+          border-left: 3px solid ${primaryColor};
+        }
+      `}</style>
+
       <section className="w-full text-center">
         {/* Título - Escondido em mobile */}
         <h1 className="hidden lg:block" style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem', lineHeight: '1.2', color: 'white', textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
@@ -109,84 +125,105 @@ export default function MainSearchForm() {
           </small>
         </h1>
 
-        {/* Formulário Moderno */}
+        {/* Formulário Profissional */}
         <form
           onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
-          className="mt-6"
-          style={{
-            background: '#f9f3ea',
-            borderRadius: '20px',
-            padding: '24px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
-          }}
+          className="mt-8"
         >
-          {/* Grid de campos - 4 colunas em desktop, 1 em mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-
+          <div
+            className="flex flex-col lg:flex-row items-center gap-0 lg:gap-0 overflow-hidden"
+            style={{
+              background: '#f9f3ea',
+              borderRadius: '12px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              border: '1px solid #e0e0e0'
+            }}
+          >
             {/* Campo 1: Venda/Aluguel */}
-            <div className="relative">
-              <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                Pretensão
-              </label>
-              <select
-                value={searchType}
-                onChange={(e) => setSearchType(e.target.value as 'venda' | 'aluguel' | '')}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none transition-all text-gray-800 font-medium"
-              >
-                <option value="">Selecione</option>
-                {types.map((type) => (
-                  <option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </option>
-                ))}
-              </select>
+            <div className="relative w-full lg:w-1/4 border-b lg:border-b-0 lg:border-r border-gray-300">
+              <input
+                type="text"
+                value={searchType ? searchType.charAt(0).toUpperCase() + searchType.slice(1) : ''}
+                onChange={(e) => setSearchType(e.target.value.toLowerCase() as 'venda' | 'aluguel' | '')}
+                onFocus={() => setShowTypeSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowTypeSuggestions(false), 200)}
+                placeholder="Venda ou Aluguel"
+                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400"
+              />
+
+              {showTypeSuggestions && types.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200">
+                  {types.map((type) => (
+                    <div
+                      key={type}
+                      onClick={() => {
+                        setSearchType(type as 'venda' | 'aluguel')
+                        setShowTypeSuggestions(false)
+                      }}
+                      className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                    >
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Campo 2: Tipo de Imóvel */}
-            <div className="relative">
-              <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                Tipo de Imóvel
-              </label>
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none transition-all text-gray-800 font-medium"
-              >
-                <option value="">Selecione</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </option>
-                ))}
-              </select>
+            <div className="relative w-full lg:w-1/4 border-b lg:border-b-0 lg:border-r border-gray-300">
+              <input
+                type="text"
+                value={propertyType ? propertyType.charAt(0).toUpperCase() + propertyType.slice(1) : ''}
+                onChange={(e) => setPropertyType(e.target.value.toLowerCase())}
+                onFocus={() => setShowCategorySuggestions(true)}
+                onBlur={() => setTimeout(() => setShowCategorySuggestions(false), 200)}
+                placeholder="Casa, Apartamento..."
+                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400"
+              />
+
+              {showCategorySuggestions && categories.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200 max-h-64 overflow-y-auto">
+                  {categories
+                    .filter(cat => !propertyType || cat.toLowerCase().includes(propertyType.toLowerCase()))
+                    .map((category) => (
+                      <div
+                        key={category}
+                        onClick={() => {
+                          setPropertyType(category)
+                          setShowCategorySuggestions(false)
+                        }}
+                        className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
 
-            {/* Campo 3: Cidade */}
-            <div className="relative">
-              <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                Cidade
-              </label>
+            {/* Campo 3: Cidade - Autocomplete */}
+            <div className="relative w-full lg:flex-1 border-b lg:border-b-0 lg:border-r border-gray-300">
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                onFocus={() => location.length >= 2 && setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                placeholder="Digite a cidade..."
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none transition-all text-gray-800 font-medium placeholder:text-gray-400"
+                onFocus={() => setShowLocationSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowLocationSuggestions(false), 200)}
+                placeholder="Cidade ou bairro"
+                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400"
               />
 
-              {/* Dropdown de sugestões */}
-              {showSuggestions && filteredLocations.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                  {filteredLocations.map((loc, index) => (
+              {/* Autocomplete de cidades */}
+              {showLocationSuggestions && (location === '' ? cities.length > 0 : filteredLocations.length > 0) && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200 max-h-64 overflow-y-auto">
+                  {(location === '' ? cities.slice(0, 10) : filteredLocations).map((loc, index) => (
                     <div
                       key={index}
                       onClick={() => {
                         setLocation(loc)
-                        setShowSuggestions(false)
+                        setShowLocationSuggestions(false)
                       }}
-                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors text-gray-800 font-medium border-b border-gray-100 last:border-b-0"
+                      className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
                     >
                       {loc}
                     </div>
@@ -196,35 +233,33 @@ export default function MainSearchForm() {
             </div>
 
             {/* Campo 4: Quartos */}
-            <div className="relative">
-              <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                Quartos
-              </label>
+            <div className="relative w-full lg:w-auto border-gray-300">
               <select
                 value={bedrooms}
                 onChange={(e) => setBedrooms(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none transition-all text-gray-800 font-medium"
+                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 cursor-pointer"
               >
-                <option value="">Todos</option>
+                <option value="">Quartos</option>
                 <option value="1">1 quarto</option>
                 <option value="2">2 quartos</option>
                 <option value="3">3 quartos</option>
                 <option value="4">4+ quartos</option>
               </select>
             </div>
-          </div>
 
-          {/* Botão de Busca */}
-          <div className="flex justify-center">
+            {/* Botão de Busca - Integrado */}
             <button
               type="submit"
-              className="px-12 py-4 rounded-full font-bold text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-3 text-base"
-              style={{ backgroundColor: primaryColor }}
+              className="w-full lg:w-auto px-8 py-3.5 font-semibold text-white text-sm transition-all duration-200 hover:opacity-90 flex items-center justify-center gap-2"
+              style={{
+                backgroundColor: primaryColor,
+                borderRadius: '0 12px 12px 0'
+              }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span>BUSCAR IMÓVEIS</span>
+              <span className="hidden lg:inline">BUSCAR</span>
             </button>
           </div>
         </form>
