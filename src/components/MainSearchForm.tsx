@@ -87,10 +87,18 @@ export default function MainSearchForm() {
   useEffect(() => {
     if (location.length >= 1) {
       const allLocations = [...cities, ...neighborhoods]
-      const filtered = allLocations.filter(loc =>
+
+      // Priorizar matches que começam com o termo buscado
+      const exactMatches = allLocations.filter(loc =>
+        loc.toLowerCase().startsWith(location.toLowerCase())
+      )
+      const partialMatches = allLocations.filter(loc =>
+        !loc.toLowerCase().startsWith(location.toLowerCase()) &&
         loc.toLowerCase().includes(location.toLowerCase())
       )
-      setFilteredLocations(filtered.slice(0, 10))
+
+      const filtered = [...exactMatches, ...partialMatches]
+      setFilteredLocations(filtered.slice(0, 12))
     } else {
       setFilteredLocations([])
     }
@@ -152,11 +160,11 @@ export default function MainSearchForm() {
           left: 0;
           right: 0;
           background: white;
-          border-radius: 16px;
+          border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0,0,0,0.12);
           overflow: hidden;
           z-index: 100;
-          max-height: 280px;
+          max-height: 320px;
           overflow-y: auto;
         }
         .dropdown-item-modern {
@@ -205,7 +213,7 @@ export default function MainSearchForm() {
             className="flex flex-col lg:flex-row items-stretch gap-0"
             style={{
               background: 'white',
-              borderRadius: '50px',
+              borderRadius: '16px',
               boxShadow: '0 6px 40px rgba(0,0,0,0.15)',
               padding: '8px 8px 8px 32px',
               border: '1px solid #e0e0e0'
@@ -289,7 +297,7 @@ export default function MainSearchForm() {
               />
               {showLocationSuggestions && (location === '' ? cities.length > 0 : filteredLocations.length > 0) && (
                 <div className="dropdown-modern">
-                  {(location === '' ? cities.slice(0, 8) : filteredLocations).map((loc, index) => (
+                  {(location === '' ? cities.slice(0, 12) : filteredLocations).map((loc, index) => (
                     <div
                       key={index}
                       onClick={() => {
@@ -347,7 +355,8 @@ export default function MainSearchForm() {
             {/* Botão Buscar */}
             <button
               type="submit"
-              className="search-btn rounded-full px-10 py-4 text-white font-bold text-base flex items-center gap-2 lg:ml-2"
+              className="search-btn px-10 py-4 text-white font-bold text-base flex items-center gap-2 lg:ml-2"
+              style={{ borderRadius: '12px' }}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
