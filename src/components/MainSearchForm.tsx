@@ -108,59 +108,124 @@ export default function MainSearchForm() {
   return (
     <>
       <style jsx>{`
-        .search-input {
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
+        .modern-field {
+          position: relative;
+          flex: 1;
+          min-width: 0;
         }
-        .search-input:focus {
-          border-color: ${primaryColor};
-          box-shadow: 0 0 0 3px ${primaryColor}15;
+        .modern-field:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          height: 24px;
+          width: 1px;
+          background: #e0e0e0;
         }
-        .suggestion-item:hover {
+        .field-label {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          color: #1a1a1a;
+          margin-bottom: 4px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .field-input {
+          width: 100%;
+          border: none;
+          outline: none;
+          background: transparent;
+          font-size: 14px;
+          font-weight: 500;
+          color: #1a1a1a;
+          padding: 0;
+        }
+        .field-input::placeholder {
+          color: #999;
+          font-weight: 400;
+        }
+        .dropdown-modern {
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 0;
+          right: 0;
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+          overflow: hidden;
+          z-index: 100;
+          max-height: 280px;
+          overflow-y: auto;
+        }
+        .dropdown-item-modern {
+          padding: 14px 18px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          color: #1a1a1a;
+          transition: all 0.15s ease;
+          border-bottom: 1px solid #f5f5f5;
+        }
+        .dropdown-item-modern:last-child {
+          border-bottom: none;
+        }
+        .dropdown-item-modern:hover {
           background: ${primaryColor}08;
-          border-left: 3px solid ${primaryColor};
+          color: ${primaryColor};
+          padding-left: 22px;
+        }
+        .search-btn {
+          background: ${primaryColor};
+          transition: all 0.2s ease;
+        }
+        .search-btn:hover {
+          transform: scale(1.02);
+          box-shadow: 0 6px 20px ${primaryColor}40;
         }
       `}</style>
 
       <section className="w-full text-center">
         {/* Título - Escondido em mobile */}
-        <h1 className="hidden lg:block" style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem', lineHeight: '1.2', color: 'white', textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
+        <h1 className="hidden lg:block" style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1.5rem', lineHeight: '1.2', color: 'white', textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
           {headerTitle}
           <br />
-          <small style={{ fontSize: '1.5rem', fontWeight: 'normal', opacity: 0.9, display: 'block', marginTop: '0.5rem' }}>
+          <small style={{ fontSize: '1.5rem', fontWeight: 'normal', opacity: 0.9, display: 'block', marginTop: '0.75rem' }}>
             {headerSubtitle}
           </small>
         </h1>
 
-        {/* Formulário Profissional */}
+        {/* Formulário Moderno */}
         <form
           onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
-          className="mt-8"
+          className="mt-10"
         >
           <div
-            className="flex flex-col lg:flex-row items-center gap-0 lg:gap-0 overflow-hidden"
+            className="flex flex-col lg:flex-row items-stretch gap-0"
             style={{
-              background: '#f9f3ea',
-              borderRadius: '12px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              background: 'white',
+              borderRadius: '50px',
+              boxShadow: '0 6px 40px rgba(0,0,0,0.15)',
+              padding: '8px 8px 8px 32px',
               border: '1px solid #e0e0e0'
             }}
           >
-            {/* Campo 1: Venda/Aluguel */}
-            <div className="relative w-full lg:w-1/4 border-b lg:border-b-0 lg:border-r border-gray-300">
+            {/* Campo 1: Pretensão */}
+            <div className="modern-field py-4 pr-6">
+              <label className="field-label">Pretensão</label>
               <input
                 type="text"
                 value={searchType ? searchType.charAt(0).toUpperCase() + searchType.slice(1) : ''}
-                onChange={(e) => setSearchType(e.target.value.toLowerCase() as 'venda' | 'aluguel' | '')}
                 onFocus={() => setShowTypeSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowTypeSuggestions(false), 200)}
+                onChange={(e) => setSearchType(e.target.value.toLowerCase() as 'venda' | 'aluguel' | '')}
                 placeholder="Venda ou Aluguel"
-                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400"
+                className="field-input cursor-pointer"
+                readOnly
               />
-
               {showTypeSuggestions && types.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200">
+                <div className="dropdown-modern">
                   {types.map((type) => (
                     <div
                       key={type}
@@ -168,7 +233,7 @@ export default function MainSearchForm() {
                         setSearchType(type as 'venda' | 'aluguel')
                         setShowTypeSuggestions(false)
                       }}
-                      className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                      className="dropdown-item-modern"
                     >
                       {type.charAt(0).toUpperCase() + type.slice(1)}
                     </div>
@@ -177,22 +242,23 @@ export default function MainSearchForm() {
               )}
             </div>
 
-            {/* Campo 2: Tipo de Imóvel */}
-            <div className="relative w-full lg:w-1/4 border-b lg:border-b-0 lg:border-r border-gray-300">
+            {/* Campo 2: Tipo */}
+            <div className="modern-field py-4 pr-6">
+              <label className="field-label">Tipo</label>
               <input
                 type="text"
                 value={propertyType ? propertyType.charAt(0).toUpperCase() + propertyType.slice(1) : ''}
-                onChange={(e) => setPropertyType(e.target.value.toLowerCase())}
                 onFocus={() => setShowCategorySuggestions(true)}
                 onBlur={() => setTimeout(() => setShowCategorySuggestions(false), 200)}
+                onChange={(e) => setPropertyType(e.target.value.toLowerCase())}
                 placeholder="Casa, Apartamento..."
-                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400"
+                className="field-input"
               />
-
               {showCategorySuggestions && categories.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200 max-h-64 overflow-y-auto">
+                <div className="dropdown-modern">
                   {categories
                     .filter(cat => !propertyType || cat.toLowerCase().includes(propertyType.toLowerCase()))
+                    .slice(0, 8)
                     .map((category) => (
                       <div
                         key={category}
@@ -200,7 +266,7 @@ export default function MainSearchForm() {
                           setPropertyType(category)
                           setShowCategorySuggestions(false)
                         }}
-                        className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                        className="dropdown-item-modern"
                       >
                         {category.charAt(0).toUpperCase() + category.slice(1)}
                       </div>
@@ -209,29 +275,28 @@ export default function MainSearchForm() {
               )}
             </div>
 
-            {/* Campo 3: Cidade - Autocomplete */}
-            <div className="relative w-full lg:flex-1 border-b lg:border-b-0 lg:border-r border-gray-300">
+            {/* Campo 3: Cidade */}
+            <div className="modern-field py-4 pr-6">
+              <label className="field-label">Cidade</label>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 onFocus={() => setShowLocationSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowLocationSuggestions(false), 200)}
-                placeholder="Cidade ou bairro"
-                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400"
+                placeholder="Onde você procura?"
+                className="field-input"
               />
-
-              {/* Autocomplete de cidades */}
               {showLocationSuggestions && (location === '' ? cities.length > 0 : filteredLocations.length > 0) && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200 max-h-64 overflow-y-auto">
-                  {(location === '' ? cities.slice(0, 10) : filteredLocations).map((loc, index) => (
+                <div className="dropdown-modern">
+                  {(location === '' ? cities.slice(0, 8) : filteredLocations).map((loc, index) => (
                     <div
                       key={index}
                       onClick={() => {
                         setLocation(loc)
                         setShowLocationSuggestions(false)
                       }}
-                      className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                      className="dropdown-item-modern"
                     >
                       {loc}
                     </div>
@@ -241,20 +306,28 @@ export default function MainSearchForm() {
             </div>
 
             {/* Campo 4: Quartos */}
-            <div className="relative w-full lg:w-auto border-gray-300">
+            <div className="modern-field py-4 pr-2">
+              <label className="field-label">Quartos</label>
               <input
                 type="text"
                 value={bedrooms ? bedroomOptions.find(opt => opt.value === bedrooms)?.label || '' : ''}
-                onChange={(e) => setBedrooms('')}
                 onFocus={() => setShowBedroomsSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowBedroomsSuggestions(false), 200)}
-                placeholder="Quartos"
+                placeholder="Quantos?"
                 readOnly
-                className="search-input w-full px-4 py-3.5 bg-transparent border-0 outline-none text-sm font-medium text-gray-800 placeholder:text-gray-400 cursor-pointer"
+                className="field-input cursor-pointer"
               />
-
               {showBedroomsSuggestions && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-2xl z-50 border border-gray-200">
+                <div className="dropdown-modern">
+                  <div
+                    onClick={() => {
+                      setBedrooms('')
+                      setShowBedroomsSuggestions(false)
+                    }}
+                    className="dropdown-item-modern"
+                  >
+                    Qualquer
+                  </div>
                   {bedroomOptions.map((option) => (
                     <div
                       key={option.value}
@@ -262,7 +335,7 @@ export default function MainSearchForm() {
                         setBedrooms(option.value)
                         setShowBedroomsSuggestions(false)
                       }}
-                      className="suggestion-item px-4 py-2.5 cursor-pointer text-sm text-gray-700 hover:text-gray-900 border-b last:border-b-0 border-gray-100 transition-all"
+                      className="dropdown-item-modern"
                     >
                       {option.label}
                     </div>
@@ -271,19 +344,15 @@ export default function MainSearchForm() {
               )}
             </div>
 
-            {/* Botão de Busca - Integrado */}
+            {/* Botão Buscar */}
             <button
               type="submit"
-              className="w-full lg:w-auto px-8 py-3.5 font-semibold text-white text-sm transition-all duration-200 hover:opacity-90 flex items-center justify-center gap-2"
-              style={{
-                backgroundColor: primaryColor,
-                borderRadius: '0 12px 12px 0'
-              }}
+              className="search-btn rounded-full px-10 py-4 text-white font-bold text-base flex items-center gap-2 lg:ml-2"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="hidden lg:inline">BUSCAR</span>
+              <span>Buscar</span>
             </button>
           </div>
         </form>
