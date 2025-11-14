@@ -60,31 +60,30 @@ export default function SearchForm() {
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="animate-pulse">
-          <div className="h-20 bg-white/80 rounded-2xl"></div>
-        </div>
+      <div className="w-full max-w-7xl mx-auto px-4">
+        <div className="animate-pulse bg-white/70 h-24 rounded-3xl"></div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4">
-      {/* Formulário de Busca Redesenhado */}
-      <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <form onSubmit={handleSearch}>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
+    <div className="w-full max-w-7xl mx-auto px-4">
+      {/* NOVO FORMULÁRIO COMPLETO */}
+      <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-6 border border-gray-100">
+        <form onSubmit={handleSearch} className="space-y-6">
 
-            {/* 1. Venda/Aluguel - Destaque */}
-            <div className="relative group border-b md:border-b-0 md:border-r border-gray-200">
-              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Negócio
-              </div>
+          {/* Linha de Campos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            {/* CAMPO 1: Venda/Aluguel */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">
+                🏷️ Tipo de Negócio
+              </label>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath fill=\'%23999\' d=\'M7 10L2 5h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-white text-gray-800 font-medium cursor-pointer"
               >
                 <option value="">Selecione</option>
                 {filters.types && filters.types.map((type) => (
@@ -95,16 +94,15 @@ export default function SearchForm() {
               </select>
             </div>
 
-            {/* 2. Tipo de Imóvel */}
-            <div className="relative group border-b md:border-b-0 md:border-r border-gray-200">
-              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Tipo
-              </div>
+            {/* CAMPO 2: Tipo de Imóvel */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">
+                🏠 Tipo de Imóvel
+              </label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath fill=\'%23999\' d=\'M7 10L2 5h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-white text-gray-800 font-medium cursor-pointer"
               >
                 <option value="">Selecione</option>
                 {filters.categoriesByType && Object.values(filters.categoriesByType).flat().filter((v, i, a) => a.indexOf(v) === i).map((category) => (
@@ -115,51 +113,50 @@ export default function SearchForm() {
               </select>
             </div>
 
-            {/* 3. Cidade */}
-            <div className="relative group border-b md:border-b-0 md:border-r border-gray-200 md:col-span-2">
-              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Localização
-              </div>
+            {/* CAMPO 3: Cidade */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">
+                📍 Localização
+              </label>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Cidade, bairro..."
-                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg placeholder:text-gray-400 hover:bg-gray-50 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-white text-gray-800 font-medium placeholder:text-gray-400"
               />
             </div>
 
-            {/* 4. Quartos */}
-            <div className="relative group">
-              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Quartos
-              </div>
+            {/* CAMPO 4: Quartos */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">
+                🛏️ Quartos
+              </label>
               <select
                 value={bedrooms}
                 onChange={(e) => setBedrooms(e.target.value)}
-                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath fill=\'%23999\' d=\'M7 10L2 5h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-white text-gray-800 font-medium cursor-pointer"
               >
                 <option value="">Todos</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4+</option>
+                <option value="1">1 quarto</option>
+                <option value="2">2 quartos</option>
+                <option value="3">3 quartos</option>
+                <option value="4">4+ quartos</option>
               </select>
             </div>
           </div>
 
-          {/* Botão de Busca - Inferior */}
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 flex justify-end">
+          {/* Botão de Busca Grande */}
+          <div className="flex justify-center pt-2">
             <button
               type="submit"
-              className="px-8 py-3 rounded-xl font-bold text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+              className="px-12 py-4 text-lg font-bold text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-3"
               style={{ backgroundColor: primaryColor }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span>Buscar Imóveis</span>
+              <span>BUSCAR IMÓVEIS</span>
             </button>
           </div>
         </form>
